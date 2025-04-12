@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Calendar</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" type= "text/css" href="style.css" />
+
+</head>
+<body>
+  
+    <main class="container" id="events-listing">
+        <header>
+            <h1>Events Calendar</h1>
+        </header>
+
+        <section class="search-filter-bar">
+            <input type="search" placeholder="Search events..." aria-label="Search events">
+            <select aria-label="Filter by category">
+                <option value="">All Categories</option>
+                <option value="academic">Academic</option>
+                <option value="social">Social</option>
+                <option value="sports">Sports</option>
+            </select>
+            <select aria-label="Filter by date">
+                <option value="">All Dates</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </section>
+
+        <section class="controls">
+            <select aria-label="Sort events">
+                <option value="">Sort by...</option>
+                <option value="date">Date</option>
+                <option value="title">Title</option>
+                <option value="location">Location</option>
+            </select>
+            <a href="#create-event" class="button" role="button">Add New Event</a>
+        </section>
+
+        <section class="events-grid">
+            <article class="event-card">
+                <h2>Sample Event 1</h2>
+                <p>Date: April 12, 2025</p>
+                <p>Location: S18</p>
+                <p>Category: Academic</p>
+            </article>
+       
+        </section>
+
+        <nav class="controls">
+            <ul>
+                <li><a href="#" role="button">Previous</a></li>
+                <li><a href="#" role="button">Next</a></li>
+            </ul>
+        </nav>
+    </main>
+
+
+    <main class="container" id="create-event">
+        <header>
+            <h1>Create New Event</h1>
+        </header>
+
+        <form class="form-grid">
+            <div>
+                <label for="title">Event Title <span aria-label="required">*</span></label>
+                <input type="text" id="title" required placeholder="Enter event title">
+            </div>
+            <div>
+                <label for="date">Date <span aria-label="required">*</span></label>
+                <input type="date" id="date" required>
+            </div>
+            <div>
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="Enter location">
+            </div>
+            <div>
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="academic">Academic</option>
+                    <option value="social">Social</option>
+                    <option value="sports">Sports</option>
+                </select>
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <textarea id="description" placeholder="Event details..."></textarea>
+            </div>
+            <div>
+                <button type="submit">Create Event</button>
+                <a href="#events-listing" role="button" class="secondary">Cancel</a>
+            </div>
+        </form>
+    </main>
+
+
+    <main class="container" id="event-detail" >
+        <section class="detail-container">
+            <header>
+                <h1>Sample Event 1</h1>
+            </header>
+            <article>
+                <p><strong>Date:</strong> April 12, 2025</p>
+                <p><strong>Location:</strong> S18</p>
+                <p><strong>Category:</strong> Academic</p>
+                <p><strong>Description:</strong> This is a sample event description...</p>
+            </article>
+
+            <div class="controls">
+                <button>Edit Event</button>
+                <button class="secondary">Delete Event</button>
+                <a href="#events-listing" role="button">Back to Events</a>
+            </div>
+
+            <section class="comments-section">
+                <h2>Comments</h2>
+                <article>
+                    <p>No comments yet.</p>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>&copy; 2025 Event Calendar</p>
+    </footer>
+</body>
+</html>
