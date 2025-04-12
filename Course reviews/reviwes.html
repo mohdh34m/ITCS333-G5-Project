@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<!-- name: Abdulraman2r2-->
+ <!-- id=202204446-->
+   <!-- section:1 -->
+
+ 
+
+
+<html lang="en" data-theme="dark">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Reviews</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <style>
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .review-card, .review-detail {
+            transition: transform 0.2s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-card {
+            border-top: 4px solid var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            flex-grow: 1;
+        }
+
+        .search-filter input {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .sort-pagination {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .rating {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .instructor {
+            color: var(--muted-color);
+            font-style: italic;
+            margin: 0.3rem 0;
+        }
+
+        .review-detail header {
+            border-bottom: 1px solid var(--muted-border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.9em;
+        }
+
+        .review-content h3 {
+            margin-top: 1.5rem;
+            color: var(--primary);
+        }
+
+        .difficulty-meter {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-filter, .sort-pagination {
+                width: 100%;
+            }
+            
+            .sort-pagination {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>Course Reviews</strong></li>
+            </ul>
+            <ul>
+                <li><a href="#listing" class="active">All Reviews</a></li>
+                <li><a href="#create">Add Review</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <section id="listing">
+            <h1>Course Reviews</h1>
+            
+            <div class="controls">
+                <div class="search-filter">
+                    <input type="search" id="search" name="search" placeholder="Search reviews...">
+                    <select id="filter" name="filter">
+                        <option value="">All Courses</option>
+                        <option value="ITNE352">ITNE352 Network Programming</option>
+                        <option value="ITCS333">ITCS333 Internet Software Development</option>
+                        <option value="TRW">Technical Report Writing</option>
+                    </select>
+                </div>
+                
+                <div class="sort-pagination">
+                    <select id="sort" name="sort">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="rating-high">Highest Rating</option>
+                        <option value="rating-low">Lowest Rating</option>
+                    </select>
+                    
+                    <nav>
+                        <ul>
+                            <li><a href="#" aria-label="Previous">←</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#" aria-current="page">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#" aria-label="Next">→</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            
+            <a href="#create" role="button" class="contrast">Add New Review</a>
+            
+            <div class="reviews-grid">
+                <article class="review-card">
+                    <header>
+                        <h2>ITNE352 Network Programming</h2>
+                        <div class="instructor">Dr. Mohammed Abdulaziz</div>
+                        <div class="rating">★★★★☆</div>
+                    </header>
+                    <p>Excellent course covering socket programming and network protocols. Challenging assignments but very rewarding.</p>
+                    <footer>
+                        <small>Posted by: CSStudent • 2023-10-15</small>
+                        <a href="#detail-ITNE352" role="button" class="secondary">Read More</a>
+                    </footer>
+                </article>
+                
+                <article class="review-card">
+                    <header>
+                        <h2>ITCS333 Internet Software Development</h2>
+                        <div class="instructor">Mr. Abdulla Ebrahim</div>
+                        <div class="rating">★★★★★</div>
+                    </header>
+                    <p>Fantastic course on web development technologies. Learned HTML, CSS, JavaScript and backend integration.</p>
+                    <footer>
+                        <small>Posted by: WebDev2023 • 2023-09-22</small>
+                        <a href="#detail-ITCS333" role="button" class="secondary">Read More</a>
+                    </footer>
+                </article>
+                
+                <article class="review-card">
+                    <header>
+                        <h2>Technical Report Writing</h2>
+                        <div class="instructor">Dr. Mohammed Ebrahim</div>
+                        <div class="rating">★★★☆☆</div>
+                    </header>
+                    <p>Important skills for academic and professional writing. Course materials were comprehensive.</p>
+                    <footer>
+                        <small>Posted by: EngineeringStudent • 2023-08-10</small>
+                        <a href="#detail-TRW" role="button" class="secondary">Read More</a>
+                    </footer>
+                </article>
+            </div>
+        </section>
+        
+        <section id="create" class="hidden">
+            <h1>Add New Course Review</h1>
+            
+            <form>
+                <label for="course-name">
+                    Course Name <span class="required">*</span>
+                    <select id="course-name" name="course-name" required>
+                        <option value="">Select course</option>
+                        <option value="ITNE352">ITNE352 Network Programming</option>
+                        <option value="ITCS333">ITCS333 Internet Software Development</option>
+                        <option value="TRW">Technical Report Writing</option>
+                    </select>
+                </label>
+                
+                <label for="instructor">
+                    Instructor <span class="required">*</span>
+                    <input type="text" id="instructor" name="instructor" required readonly
+                        placeholder="Instructor will auto-fill based on course selection">
+                </label>
+                
+                <label for="rating">
+                    Rating <span class="required">*</span>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select rating</option>
+                        <option value="5">★★★★★ (Excellent)</option>
+                        <option value="4">★★★★☆ (Very Good)</option>
+                        <option value="3">★★★☆☆ (Good)</option>
+                        <option value="2">★★☆☆☆ (Fair)</option>
+                        <option value="1">★☆☆☆☆ (Poor)</option>
+                    </select>
+                </label>
+                
+                <label for="semester">
+                    Semester Taken <span class="required">*</span>
+                    <select id="semester" name="semester" required>
+                        <option value="">Select semester</option>
+                        <option value="fall23">Fall 2023</option>
+                        <option value="summer23">Summer 2023</option>
+                        <option value="spring23">Spring 2023</option>
+                    </select>
+                </label>
+                
+                <label for="review-text">
+                    Review <span class="required">*</span>
+                    <textarea id="review-text" name="review-text" required 
+                        placeholder="Share your experience with this course..."></textarea>
+                </label>
+                
+                <div class="form-actions">
+                    <button type="submit" class="contrast">Submit Review</button>
+                    <a href="#listing" role="button" class="secondary">Cancel</a>
+                </div>
+            </form>
+        </section>
+        
+        <section id="detail-ITNE352" class="hidden">
+            <h1>Review Details</h1>
+            
+            <article class="review-detail">
+                <header>
+                    <h2>ITNE352 Network Programming</h2>
+                    <div class="meta">
+                        <span class="instructor">Dr. Mohammed Abdulaziz</span>
+                        <span class="rating">★★★★☆ (4/5)</span>
+                        <span class="semester">Fall 2023</span>
+                    </div>
+                </header>
+                
+                <div class="review-content">
+                    <h3>Course Review</h3>
+                    <p>This course provides comprehensive coverage of network programming concepts including socket programming, TCP/IP protocols, and client-server architectures. The assignments were challenging but well-structured to build practical skills. Dr. Abdulaziz explains complex topics clearly and provides excellent support during office hours.</p>
+                    
+                    <h3>Course Highlights</h3>
+                    <ul>
+                        <li>Hands-on socket programming exercises</li>
+                        <li>Detailed coverage of network protocols</li>
+                        <li>Practical client-server project</li>
+                        <li>Clear lecture materials</li>
+                    </ul>
+                    
+                    <h3>Difficulty Level</h3>
+                    <div class="difficulty-meter">
+                        <span class="filled">★★★</span><span>★★</span> (Moderate)
+                    </div>
+                </div>
+                
+                <footer>
+                    <small>Posted by: CSStudent • 2023-10-15</small>
+                    <div class="actions">
+                        <a href="#create" role="button" class="secondary">Edit</a>
+                        <a href="#listing" role="button" class="secondary">Back to List</a>
+                    </div>
+                </footer>
+            </article>
+        </section>
+        
+        <section id="detail-ITCS333" class="hidden">
+            <h1>Review Details</h1>
+            
+            <article class="review-detail">
+                <header>
+                    <h2>ITCS333 Internet Software Development</h2>
+                    <div class="meta">
+                        <span class="instructor">Mr. Abdulla Ebrahim</span>
+                        <span class="rating">★★★★★ (5/5)</span>
+                        <span class="semester">Summer 2023</span>
+                    </div>
+                </header>
+                
+                <div class="review-content">
+                    <h3>Course Review</h3>
+                    <p>One of the most practical courses in the curriculum. Mr. Ebrahim's approach to teaching web development is project-based, which helped me understand real-world applications immediately. We covered frontend technologies (HTML5, CSS3, JavaScript) and backend integration with databases.</p>
+                    
+                    <h3>Course Highlights</h3>
+                    <ul>
+                        <li>Complete web application development</li>
+                        <li>Modern JavaScript frameworks</li>
+                        <li>REST API development</li>
+                        <li>Helpful code reviews</li>
+                    </ul>
+                    
+                    <h3>Difficulty Level</h3>
+                    <div class="difficulty-meter">
+                        <span class="filled">★★</span><span>★★★</span> (Moderate)
+                    </div>
+                </div>
+                
+                <footer>
+                    <small>Posted by: WebDev2023 • 2023-09-22</small>
+                    <div class="actions">
+                        <a href="#create" role="button" class="secondary">Edit</a>
+                        <a href="#listing" role="button" class="secondary">Back to List</a>
+                    </div>
+                </footer>
+            </article>
+        </section>
+        
+        <section id="detail-TRW" class="hidden">
+            <h1>Review Details</h1>
+            
+            <article class="review-detail">
+                <header>
+                    <h2>Technical Report Writing</h2>
+                    <div class="meta">
+                        <span class="instructor">Dr. Mohammed Ebrahim</span>
+                        <span class="rating">★★★☆☆ (3/5)</span>
+                        <span class="semester">Spring 2023</span>
+                    </div>
+                </header>
+                
+                <div class="review-content">
+                    <h3>Course Review</h3>
+                    <p>This course teaches essential writing skills for technical professionals. While the content was valuable, the workload was heavier than expected with multiple writing assignments. Dr. Ebrahim provides detailed feedback on writing style and structure.</p>
+                    
+                    <h3>Course Highlights</h3>
+                    <ul>
+                        <li>Professional report formatting</li>
+                        <li>Technical documentation standards</li>
+                        <li>Effective data presentation</li>
+                        <li>Academic citation methods</li>
+                    </ul>
+                    
+                    <h3>Difficulty Level</h3>
+                    <div class="difficulty-meter">
+                        <span class="filled">★★★</span><span>★★</span> (Moderate)
+                    </div>
+                </div>
+                
+                <footer>
+                    <small>Posted by: EngineeringStudent • 2023-08-10</small>
+                    <div class="actions">
+                        <a href="#create" role="button" class="secondary">Edit</a>
+                        <a href="#listing" role="button" class="secondary">Back to List</a>
+                    </div>
+                </footer>
+            </article>
+        </section>
+    </main>
+
+    <footer class="container">
+        <small>© 2023 University Course Reviews • All rights reserved</small>
+    </footer>
+
+    <script>
+     
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+               
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+               
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.classList.remove('hidden');
+                }
+            });
+        });
+
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        
+        document.getElementById('course-name').addEventListener('change', function() {
+            const instructorField = document.getElementById('instructor');
+            switch(this.value) {
+                case 'ITNE352':
+                    instructorField.value = 'Dr. Mohammed Abdulaziz';
+                    break;
+                case 'ITCS333':
+                    instructorField.value = 'Mr. Abdulla Ebrahim';
+                    break;
+                case 'TRW':
+                    instructorField.value = 'Dr. Mohammed Ebrahim';
+                    break;
+                default:
+                    instructorField.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
