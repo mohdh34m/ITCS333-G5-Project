@@ -3,4 +3,4 @@
 |---|---|---|---|
 | 202003628  | Mansoor-salman  | Mansoor salman  | Club Activities  |
 | 202104724  | mohdh34m  | Mohamed Jasim  | Study Group Finder  |
-|   |   |   |   |
+| 202101055  | Omar-Alsayedd  | Omar Nasser  | Events Calendar  |
