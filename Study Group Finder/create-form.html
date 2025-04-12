@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css" />
+    <title>Hello world!</title>
+</head>
+
+<body>
+    <nav class="container navbar">
+        <h1><strong>Create Study Group</strong></h1>
+    </nav>
+    <main class="container">
+        <form>
+            <label for="group-name">Group Name</label>
+            <input type="text" id="group-name" name="group-name" placeholder="e.g. Calculus II Study Group" required />
+
+            <label for="subject">Subject</label>
+            <select name="subjects" id="subject" required>
+                <option selected disabled value="">
+                    Select subject...
+                </option>
+                <option>Math</option>
+                <option>Physics</option>
+                <option>Computer Science</option>
+                <option>Business</option>
+            </select>
+
+            <label for="course">Course Code</label>
+            <input type="text" id="course" name="course" placeholder="e.g. MATH102" required />
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Briefly describe the group's purpose..." rows="4"required></textarea>
+
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" placeholder="e.g. S40 - 77" required />
+
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+
+            <label for="time">Time</label>
+            <input type="time" id="time" name="time" required />
+
+            <label for="members">Maximum Members</label>
+            <input type="number" id="members" name="members" min="4" placeholder="e.g. 8" pattern="\w{4, 50}" required />
+
+            <button type="submit" class="primary">Create Group</button>
+        </form>
+    </main>
+    <footer class="footer">
+        <p>© 2025 | Study Group Finder</p>
+    </footer>
+</body>
+
+</html>
