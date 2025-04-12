@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Hub - Club Activities</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>Campus Hub</strong></li>
+            </ul>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="create.html" role="button">Post Activity</a></li>
+            </ul>
+        </nav>
+        <h1>Club Activities</h1>
+        <p>Discover and share upcoming club events and activities</p>
+    </header>
+
+    <main class="container">
+        <section class="search-section">
+            <form>
+                <div class="grid">
+                    <input type="search" id="search" name="search" placeholder="Search activities..." aria-label="Search">
+                    <select id="club" name="club" aria-label="Filter by club">
+                        <option value="">All Clubs</option>
+                        <option value="debate">Debate Club</option>
+                        <option value="chess">Chess Club</option>
+                        <option value="dance">Dance Club</option>
+                        <option value="coding">Coding Club</option>
+                    </select>
+                    <select id="sort" name="sort" aria-label="Sort by">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="upcoming">Upcoming Soonest</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                </div>
+            </form>
+        </section>
+
+        <section class="activities-grid">
+            <article>
+                <header>
+                    <hgroup>
+                        <h2>Chess Tournament</h2>
+                        <h3>Chess Club • Oct 15, 2025</h3>
+                    </hgroup>
+                    <div class="attendees">👥 24 attending</div>
+                </header>
+                <p>Annual inter-college chess championship. Open to all skill levels with prizes for top performers.</p>
+                <footer>
+                    <small>Posted by: chess_president • 3 days ago</small>
+                    <a href="detail.html" role="button">View Details</a>
+                </footer>
+            </article>
+
+            <article>
+                <header>
+                    <hgroup>
+                        <h2>Hackathon Workshop</h2>
+                        <h3>Coding Club • Oct 20, 2025</h3>
+                    </hgroup>
+                    <div class="attendees">👥 56 attending</div>
+                </header>
+                <p>Prepare for the upcoming hackathon with this hands-on workshop covering web development and APIs.</p>
+                <footer>
+                    <small>Posted by: code_wizard • 1 week ago</small>
+                    <a href="detail.html" role="button">View Details</a>
+                </footer>
+            </article>
+
+            <article>
+                <header>
+                    <hgroup>
+                        <h2>Salsa Night</h2>
+                        <h3>Dance Club • Oct 12, 2025</h3>
+                    </hgroup>
+                    <div class="attendees">👥 42 attending</div>
+                </header>
+                <p>Beginner-friendly salsa dancing evening with professional instructors. No partner needed!</p>
+                <footer>
+                    <small>Posted by: dance_queen • 2 days ago</small>
+                    <a href="detail.html" role="button">View Details</a>
+                </footer>
+            </article>
+        </section>
+
+        <section class="pagination">
+            <nav>
+                <ul>
+                    <li><a href="#" aria-label="Previous">←</a></li>
+                    <li><a href="#" aria-current="page">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#" aria-label="Next">→</a></li>
+                </ul>
+            </nav>
+        </section>
+    </main>
+
+    <footer class="container">
+        <small>Campus Hub • © 2025</small>
+    </footer>
+</body>
+</html>
