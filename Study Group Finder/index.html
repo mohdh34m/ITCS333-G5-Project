@@ -30,27 +30,27 @@
                 <option>Computer Science</option>
                 <option>Business</option>
             </select>
-            <select name="sort">
-                <option selected>
+            <select name="sort" id="sort">
+                <option value="most" selected>
                     Most recent
                 </option>
-                <option>Most popular</option>
-                <option>Upcoming session</option>
+                <option value="title-asc">Title (A → Z)</option>
+                <option value="title-desc">Title (Z → A)</option>
+                <option value="lowest-members">Members (Lowest to Highest)</option>
+                <option value="highest-members">Members (Highest to Lowest)</option>
+                <option value="date-old">Date (Oldest → Newest)</option>
+                <option value="date-new">Date (Newest → Oldest)</option>
+                <option value="date-coming">Upcoming Study Goups</option>
             </select>
             <a href="create-form.html" role="button" class="contrast create-btn">Create New Study Group</a>
         </section>
         <section class="grid study-cards">
-
+            <div class="loader"></div>
         </section>
         <nav class="pagination">
-            <button class="secondary" disabled>Previous</button>
-
-            <button class="primary">1</button>
-            <button class="secondary">2</button>
-            <button class="secondary">3</button>
-            <button class="secondary">4</button>
-
-            <button class="secondary">Next</button>
+            <button class="secondary" id="prevBtn" disabled>Previous</button>
+            <button class="primary" id="page"></button>
+            <button class="secondary" id="nextBtn">Next</button>
         </nav>
     </main>
     <footer class="footer">

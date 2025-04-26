@@ -1,172 +1,200 @@
 [
-    {
-        "title": "Calculus II Study Group",
-        "subject": "Mathematics",
-        "description": "Group study for final exam, covering integrals, series, and vectors.",
-        "location": "S40 - Room 077",
-        "date": "May 10, 2025",
-        "time": "4:00 PM",
-        "members": 7,
-        "courseCode": "MATH102"
-    },
-    {
-        "title": "Fundamentals of Cybersecurity Study Group",
-        "subject": "Cybersecurity",
-        "description": "Reviewing core concepts including cybersecurity frameworks, defense techniques, and safeguards for the ITCY 201 course.",
-        "location": "S40 - Room 032",
-        "date": "May 10, 2025",
-        "time": "3:00 PM",
-        "members": 7,
-        "courseCode": "ITCY201"
-    },
-    {
-        "title": "Cryptography Deep Dive Session",
-        "subject": "Cybersecurity",
-        "description": "Discussing symmetric and asymmetric encryption, hash functions, and key management for the ITCY 351 course.",
-        "location": "S40 - Room 2088",
-        "date": "May 12, 2025",
-        "time": "5:00 PM",
-        "members": 5,
-        "courseCode": "ITCY351"
-    },
-    {
-        "title": "Digital Forensics Lab test Study",
-        "subject": "Cybersecurity",
-        "description": "Hands-on practice with forensic tools and investigation techniques for the ITCY 410 course.",
-        "location": "CIT Lab - Room 1008",
-        "date": "May 15, 2025",
-        "time": "2:00 PM",
-        "members": 6,
-        "courseCode": "ITCY410"
-    },
-    {
-        "title": "Secure Software Engineering Study Group",
-        "subject": "Cybersecurity",
-        "description": "Exploring secure coding practices and software inspection methods for the ITCY 354 course.",
-        "location": "S40 - Room 028",
-        "date": "May 17, 2025",
-        "time": "4:00 PM",
-        "members": 8,
-        "courseCode": "ITCY354"
-    },
-    {
-        "title": "Security Risk Assessment Study Group",
-        "subject": "Cybersecurity",
-        "description": "Analyzing risk management approaches and mitigation techniques for the ITCY 460 course.",
-        "location": "S40 - Room 030",
-        "date": "May 20, 2025",
-        "time": "1:00 PM",
-        "members": 4,
-        "courseCode": "ITCY460"
-    },
-    {
-        "title": "Data Structures Study Group",
-        "subject": "Computer Science",
-        "description": "Reviewing linked lists, trees, and graphs in preparation for ITCS214.",
-        "location": "S40 - Room 046",
-        "date": "May 10, 2025",
-        "time": "3:00 PM",
-        "members": 6,
-        "courseCode": "ITCS214"
-      },
-      {
-        "title": "Database Systems Workshop",
-        "subject": "Computer Science",
-        "description": "Hands-on session covering SQL queries and normalization for ITIS310.",
-        "location": "S40 - Room 1046",
-        "date": "May 12, 2025",
-        "time": "2:00 PM",
-        "members": 5,
-        "courseCode": "ITIS310"
-      },
-      {
-        "title": "Operating Systems Concepts Review",
-        "subject": "Computer Science",
-        "description": "Discussing process management, memory management, and file systems for ITCS301.",
-        "location": "S40 - Room 2046",
-        "date": "May 14, 2025",
-        "time": "4:00 PM",
-        "members": 7,
-        "courseCode": "ITCS301"
-      },
-      {
-        "title": "Routing and Switching Study Group",
-        "subject": "Network",
-        "description": "Exploring advanced IPv4 addressing, NAT, IPv6, and routing protocols for ITNE351.",
-        "location": "S40 - Room 2086",
-        "date": "May 10, 2025",
-        "time": "3:00 PM",
-        "members": 6,
-        "courseCode": "ITNE351"
-      },
-      {
-        "title": "Network Programming Workshop",
-        "subject": "Network",
-        "description": "Hands-on session covering socket programming, TCP/UDP, and RESTful APIs for ITNE352.",
-        "location": "S40 - Room 1089",
-        "date": "May 12, 2025",
-        "time": "2:00 PM",
-        "members": 5,
-        "courseCode": "ITNE352"
-      },
-      {
-        "title": "Network Security I Study Group",
-        "subject": "Network",
-        "description": "Covering access control, authentication protocols, and intrusion detection systems for ITNE341.",
-        "location": "S40 - Room 1085",
-        "date": "May 16, 2025",
-        "time": "1:00 PM",
-        "members": 8,
-        "courseCode": "ITNE341"
-      },
-      {
-        "title": "Ethical Hacking Techniques",
-        "subject": "Network",
-        "description": "Practicing penetration testing, vulnerability assessment, and countermeasures for ITNE480.",
-        "location": "S40 - Room 079",
-        "date": "May 20, 2025",
-        "time": "3:00 PM",
-        "members": 5,
-        "courseCode": "ITNE480"
-      },
-      {
-        "title": "Introduction to Information Systems Study Group",
-        "subject": "Information Systems",
-        "description": "Reviewing fundamental concepts of information systems and their role in organizations for ITIS103.",
-        "location": "S40 - Room 2011",
-        "date": "May 10, 2025",
-        "time": "3:00 PM",
-        "members": 6,
-        "courseCode": "ITIS103"
-      },
-      {
-        "title": "Database Management Systems Workshop",
-        "subject": "Information Systems",
-        "description": "Hands-on session covering relational models, SQL queries, and normalization techniques for ITIS213.",
-        "location": "S40 - Room 030",
-        "date": "May 12, 2025",
-        "time": "2:00 PM",
-        "members": 5,
-        "courseCode": "ITIS213"
-      },
-      {
-        "title": "Entrepreneurship and Digital Innovation Discussion",
-        "subject": "Information Systems",
-        "description": "Exploring the development and management of technology-based ventures for ITIS321.",
-        "location": "S40 - Room 2012",
-        "date": "May 14, 2025",
-        "time": "4:00 PM",
-        "members": 7,
-        "courseCode": "ITIS322"
-      },
-      {
-        "title": "Governance and Management of Enterprise IT Discussion",
-        "subject": "Information Systems",
-        "description": "Exploring IT governance concepts, frameworks, and organizational structures for ITIS362.",
-        "location": "S40 - Room 1008",
-        "date": "May 22, 2025",
-        "time": "2:00 PM",
-        "members": 7,
-        "courseCode": "ITIS362"
-      }
+  {
+      "id": 1,
+      "title": "Calculus II Study Group",
+      "subject": "Mathematics",
+      "description": "Group study for final exam, covering integrals, series, and vectors.",
+      "location": "S40 - Room 077",
+      "date": "May 10, 2025",
+      "time": "4:00 PM",
+      "members": 7,
+      "courseCode": "MATH102"
+  },
+  {
+      "id": 2,
+      "title": "Calculus I Study Group",
+      "subject": "Mathematics",
+      "description": "Group study for final exam, covering integrals, series, and vectors.",
+      "location": "S40 - Room 077",
+      "date": "April 27, 2025",
+      "time": "4:00 PM",
+      "members": 7,
+      "courseCode": "MATH102"
+  },
+  {
+      "id": 3,
+      "title": "Fundamentals of Cybersecurity Study Group",
+      "subject": "Cybersecurity",
+      "description": "Reviewing core concepts including cybersecurity frameworks, defense techniques, and safeguards for the ITCY 201 course.",
+      "location": "S40 - Room 032",
+      "date": "May 10, 2025",
+      "time": "3:00 PM",
+      "members": 7,
+      "courseCode": "ITCY201"
+  },
+  {
+      "id": 4,
+      "title": "Cryptography Deep Dive Session",
+      "subject": "Cybersecurity",
+      "description": "Discussing symmetric and asymmetric encryption, hash functions, and key management for the ITCY 351 course.",
+      "location": "S40 - Room 2088",
+      "date": "May 12, 2025",
+      "time": "5:00 PM",
+      "members": 5,
+      "courseCode": "ITCY351"
+  },
+  {
+      "id": 5,
+      "title": "Digital Forensics Lab test Study",
+      "subject": "Cybersecurity",
+      "description": "Hands-on practice with forensic tools and investigation techniques for the ITCY 410 course.",
+      "location": "CIT Lab - Room 1008",
+      "date": "May 15, 2025",
+      "time": "2:00 PM",
+      "members": 6,
+      "courseCode": "ITCY410"
+  },
+  {
+      "id": 6,
+      "title": "Secure Software Engineering Study Group",
+      "subject": "Cybersecurity",
+      "description": "Exploring secure coding practices and software inspection methods for the ITCY 354 course.",
+      "location": "S40 - Room 028",
+      "date": "May 17, 2025",
+      "time": "4:00 PM",
+      "members": 8,
+      "courseCode": "ITCY354"
+  },
+  {
+      "id": 7,
+      "title": "Security Risk Assessment Study Group",
+      "subject": "Cybersecurity",
+      "description": "Analyzing risk management approaches and mitigation techniques for the ITCY 460 course.",
+      "location": "S40 - Room 030",
+      "date": "May 20, 2025",
+      "time": "1:00 PM",
+      "members": 4,
+      "courseCode": "ITCY460"
+  },
+  {
+      "id": 8,
+      "title": "Data Structures Study Group",
+      "subject": "Computer Science",
+      "description": "Reviewing linked lists, trees, and graphs in preparation for ITCS214.",
+      "location": "S40 - Room 046",
+      "date": "May 10, 2025",
+      "time": "3:00 PM",
+      "members": 6,
+      "courseCode": "ITCS214"
+  },
+  {
+      "id": 9,
+      "title": "Database Systems Workshop",
+      "subject": "Computer Science",
+      "description": "Hands-on session covering SQL queries and normalization for ITIS310.",
+      "location": "S40 - Room 1046",
+      "date": "May 12, 2025",
+      "time": "2:00 PM",
+      "members": 5,
+      "courseCode": "ITIS310"
+  },
+  {
+      "id": 10,
+      "title": "Operating Systems Concepts Review",
+      "subject": "Computer Science",
+      "description": "Discussing process management, memory management, and file systems for ITCS301.",
+      "location": "S40 - Room 2046",
+      "date": "May 14, 2025",
+      "time": "4:00 PM",
+      "members": 7,
+      "courseCode": "ITCS301"
+  },
+  {
+      "id": 11,
+      "title": "Routing and Switching Study Group",
+      "subject": "Network",
+      "description": "Exploring advanced IPv4 addressing, NAT, IPv6, and routing protocols for ITNE351.",
+      "location": "S40 - Room 2086",
+      "date": "May 10, 2025",
+      "time": "3:00 PM",
+      "members": 6,
+      "courseCode": "ITNE351"
+  },
+  {
+      "id": 12,
+      "title": "Network Programming Workshop",
+      "subject": "Network",
+      "description": "Hands-on session covering socket programming, TCP/UDP, and RESTful APIs for ITNE352.",
+      "location": "S40 - Room 1089",
+      "date": "May 12, 2025",
+      "time": "2:00 PM",
+      "members": 5,
+      "courseCode": "ITNE352"
+  },
+  {
+      "id": 13,
+      "title": "Network Security I Study Group",
+      "subject": "Network",
+      "description": "Covering access control, authentication protocols, and intrusion detection systems for ITNE341.",
+      "location": "S40 - Room 1085",
+      "date": "May 16, 2025",
+      "time": "1:00 PM",
+      "members": 8,
+      "courseCode": "ITNE341"
+  },
+  {
+      "id": 14,
+      "title": "Ethical Hacking Techniques",
+      "subject": "Network",
+      "description": "Practicing penetration testing, vulnerability assessment, and countermeasures for ITNE480.",
+      "location": "S40 - Room 079",
+      "date": "May 20, 2025",
+      "time": "3:00 PM",
+      "members": 5,
+      "courseCode": "ITNE480"
+  },
+  {
+      "id": 15,
+      "title": "Introduction to Information Systems Study Group",
+      "subject": "Information Systems",
+      "description": "Reviewing fundamental concepts of information systems and their role in organizations for ITIS103.",
+      "location": "S40 - Room 2011",
+      "date": "May 10, 2025",
+      "time": "3:00 PM",
+      "members": 6,
+      "courseCode": "ITIS103"
+  },
+  {
+      "id": 16,
+      "title": "Database Management Systems Workshop",
+      "subject": "Information Systems",
+      "description": "Hands-on session covering relational models, SQL queries, and normalization techniques for ITIS213.",
+      "location": "S40 - Room 030",
+      "date": "May 12, 2025",
+      "time": "2:00 PM",
+      "members": 5,
+      "courseCode": "ITIS213"
+  },
+  {
+      "id": 17,
+      "title": "Entrepreneurship and Digital Innovation Discussion",
+      "subject": "Information Systems",
+      "description": "Exploring the development and management of technology-based ventures for ITIS321.",
+      "location": "S40 - Room 2012",
+      "date": "May 14, 2025",
+      "time": "4:00 PM",
+      "members": 7,
+      "courseCode": "ITIS322"
+  },
+  {
+      "id": 18,
+      "title": "Governance and Management of Enterprise IT Discussion",
+      "subject": "Information Systems",
+      "description": "Exploring IT governance concepts, frameworks, and organizational structures for ITIS362.",
+      "location": "S40 - Room 1008",
+      "date": "May 22, 2025",
+      "time": "2:00 PM",
+      "members": 7,
+      "courseCode": "ITIS362"
+  }
 ]

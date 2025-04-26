@@ -1,56 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="./style.css" />
-    <title>Group Details</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="./style.css" />
+  <title>Group Details</title>
 </head>
+
 <body>
 
-<main class="container">
-  <nav>
-    <a href="index.html" role="button" class="secondary"><i class="bi bi-arrow-left"></i> Back to Listing</a>
-  </nav>
+  <main class="container">
+    <nav>
+      <a href="index.html" role="button" class="secondary"><i class="bi bi-arrow-left"></i> Back to Listing</a>
+    </nav>
 
-  <article class="details-section">
-    <h1>Calculus II Study Group</h1>
-    <p><i class="bi bi-book"></i> <strong>Subject:</strong> Mathematics</p>
-    <p><strong>Description:</strong> Group study for final exam, covering integrals, series, and vectors.</p>
-    <p><i class="bi bi-geo-alt"></i> <strong>Location:</strong> S40 - 77</p>
-    <p><i class="bi bi-calendar"></i> <strong>Date:</strong> May 10, 2025</p>
-    <p><i class="bi bi-alarm"></i> <strong>Time:</strong> 4:00 PM</p>
-    <p><i class="bi bi-people"></i> <strong>Members:</strong> 8</p>
-    <p class="badge">MATH102</p>
-    <div>
-        <button class="secondary">Edit</button>
-        <button class="contrast">Delete</button>
-    </div>
-  </article>
-
-  <hr />
-
-  <section>
-    <h2>Comments</h2>
-
-    <form>
-      <label for="comment">Add a Comment</label>
-      <textarea id="comment" name="comment" rows="3" placeholder="Write something..." required></textarea>
-      <button type="submit" class="primary">Post Comment</button>
-    </form>
-
-    <article>
-      <header>
-        <strong>Mohamed Ali</strong> &bull; <small>May 1, 2025</small>
-      </header>
-      <p>Looking Forward!!!</p>
+    <article class="details-section">
+      <div class="loader"></div>
     </article>
 
-  </section>
-</main>
+    <hr />
 
+    <section>
+      <h2>Comments</h2>
+
+      <form id="comment-form">
+        <label for="comment">Add a Comment</label>
+        <textarea id="comment" name="comment" rows="3" placeholder="Write something..." required></textarea>
+        <button type="submit" class="primary">Post Comment</button>
+      </form>
+
+      <div id="comments-container">
+        <article>
+          <header>
+            <strong>Mohamed Ali</strong> &bull; <small>May 1, 2025</small>
+          </header>
+          <p>Looking Forward!!!</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/details.js"></script>
 </body>
+
 </html>
