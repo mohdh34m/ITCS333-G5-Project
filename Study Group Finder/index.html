@@ -17,137 +17,46 @@
     </nav>
     <main class="container">
         <section class="grid">
-            <input type="search" name="search" placeholder="Search" />
-            <select name="subjects">
-                <option selected>
+            <input type="search" id="search" name="search" placeholder="Search" />
+            <select name="subjects" id="subjectSelect">
+                <option value="all" selected>
                     All Subjects
                 </option>
-                <option>Math</option>
+                <option>Mathematics</option>
                 <option>Physics</option>
+                <option>Cybersecurity</option>
+                <option>Network</option>
+                <option>Information Systems</option>
                 <option>Computer Science</option>
                 <option>Business</option>
             </select>
-            <select name="sort">
-                <option selected>
+            <select name="sort" id="sort">
+                <option value="most" selected>
                     Most recent
                 </option>
-                <option>Most popular</option>
-                <option>Upcoming session</option>
+                <option value="title-asc">Title (A → Z)</option>
+                <option value="title-desc">Title (Z → A)</option>
+                <option value="lowest-members">Members (Lowest to Highest)</option>
+                <option value="highest-members">Members (Highest to Lowest)</option>
+                <option value="date-old">Date (Oldest → Newest)</option>
+                <option value="date-new">Date (Newest → Oldest)</option>
+                <option value="date-coming">Upcoming Study Goups</option>
             </select>
             <a href="create-form.html" role="button" class="contrast create-btn">Create New Study Group</a>
         </section>
         <section class="grid study-cards">
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
-            <article class="card">
-                <h1>Calculus II Study Group</h1>
-                <p><i class="bi bi-book"></i> Mathematics</p>
-                <p class="desc">Group study for final exam, covering integrals, series, and vectors.</p>
-                <p><i class="bi bi-geo-alt"></i> <span>S40 - 77</span></p>
-                <p><i class="bi bi-calendar"></i> <span>May 10, 2025</span></p>
-                <p><i class="bi bi-alarm"></i> <span>4:00 PM</span></p>
-                <p><i class="bi bi-people"></i> <span>8 Members</span></p>
-                <span class="badge">MATH102</span>
-                <a href="details.html" role="button" class="secondary view-btn">View Details</a>
-            </article>
-
+            <div class="loader"></div>
         </section>
         <nav class="pagination">
-            <button class="secondary" disabled>Previous</button>
-
-            <button class="primary">1</button>
-            <button class="secondary">2</button>
-            <button class="secondary">3</button>
-            <button class="secondary">4</button>
-
-            <button class="secondary">Next</button>
+            <button class="secondary" id="prevBtn" disabled>Previous</button>
+            <button class="primary" id="page"></button>
+            <button class="secondary" id="nextBtn">Next</button>
         </nav>
     </main>
     <footer class="footer">
         <p>© 2025 | Study Group Finder</p>
     </footer>
+    <script type="module" src="./js/main.js"></script>
 </body>
 
 </html>
