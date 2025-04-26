@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<!-- name: Abdulraman2r2 -->
+<!-- id=202204446 -->
+<!-- section:1 -->
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Reviews</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <style>
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .review-card, .review-detail {
+            transition: transform 0.2s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-card {
+            border-top: 4px solid var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            flex-grow: 1;
+        }
+
+        .search-filter input {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .sort-pagination {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .rating {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .instructor {
+            color: var(--muted-color);
+            font-style: italic;
+            margin: 0.3rem 0;
+        }
+
+        .review-detail header {
+            border-bottom: 1px solid var(--muted-border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.9em;
+        }
+
+        .review-content h3 {
+            margin-top: 1.5rem;
+            color: var(--primary);
+        }
+
+        .difficulty-meter {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #loading-indicator, #error-message, #success-message {
+            display: none;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+        }
+
+        #loading-indicator {
+            background: var(--card-background-color);
+            text-align: center;
+        }
+
+        #error-message {
+            background: var(--del-color);
+            color: white;
+        }
+
+        #success-message {
+            background: var(--ins-color);
+            color: white;
+        }
+
+        .error-message {
+            color: var(--del-color);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-filter, .sort-pagination {
+                width: 100%;
+            }
+            
+            .sort-pagination {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>Course Reviews</strong></li>
+            </ul>
+            <ul>
+                <li><a href="#listing" class="active">All Reviews</a></li>
+                <li><a href="#create">Add Review</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="loading-indicator">Loading reviews...</div>
+        <div id="error-message"></div>
+        <div id="success-message"></div>
+        
+        <section id="listing">
+            <h1>Course Reviews</h1>
+            
+            <div class="controls">
+                <div class="search-filter">
+                    <input type="search" id="search" name="search" placeholder="Search reviews...">
+                    <select id="filter" name="filter">
+                        <option value="">All Courses</option>
+                        <option value="ITNE352">ITNE352 Network Programming</option>
+                        <option value="ITCS333">ITCS333 Internet Software Development</option>
+                        <option value="ENGL219">Technical Report Writing</option>
+                    </select>
+                </div>
+                
+                <div class="sort-pagination">
+                    <select id="sort" name="sort">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="rating-high">Highest Rating</option>
+                        <option value="rating-low">Lowest Rating</option>
+                    </select>
+                    
+                    <nav class="pagination">
+                        <ul></ul>
+                    </nav>
+                </div>
+            </div>
+            
+            <a href="#create" role="button" class="contrast">Add New Review</a>
+            
+            <div class="reviews-grid">
+               
+            </div>
+        </section>
+        
+        <section id="create" class="hidden">
+            <h1>Add New Course Review</h1>
+            
+            <form id="review-form">
+                <label for="course-name">
+                    Course Name <span class="required">*</span>
+                    <select id="course-name" name="course-name" required>
+                        <option value="">Select course</option>
+                        <option value="ITNE352">ITNE352 Network Programming</option>
+                        <option value="ITCS333">ITCS333 Internet Software Development</option>
+                        <option value="ENGL219">Technical Report Writing</option>
+                    </select>
+                </label>
+                
+                <label for="instructor">
+                    Instructor <span class="required">*</span>
+                    <input type="text" id="instructor" name="instructor" required readonly
+                        placeholder="Instructor will auto-fill based on course selection">
+                </label>
+                
+                <label for="rating">
+                    Rating <span class="required">*</span>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select rating</option>
+                        <option value="5">★★★★★ (Excellent)</option>
+                        <option value="4">★★★★☆ (Very Good)</option>
+                        <option value="3">★★★☆☆ (Good)</option>
+                        <option value="2">★★☆☆☆ (Fair)</option>
+                        <option value="1">★☆☆☆☆ (Poor)</option>
+                    </select>
+                </label>
+                
+                <label for="semester">
+                    Semester Taken <span class="required">*</span>
+                    <select id="semester" name="semester" required>
+                        <option value="">Select semester</option>
+                        <option value="fall23">Fall 2023</option>
+                        <option value="summer23">Summer 2023</option>
+                        <option value="spring23">Spring 2023</option>
+                    </select>
+                </label>
+                
+                <label for="review-text">
+                    Review <span class="required">*</span>
+                    <textarea id="review-text" name="review-text" required 
+                        placeholder="Share your experience with this course..." minlength="30"></textarea>
+                </label>
+                
+                <div class="form-actions">
+                    <button type="submit" class="contrast">Submit Review</button>
+                    <a href="#listing" role="button" class="secondary">Cancel</a>
+                </div>
+            </form>
+        </section>
+        
+        
+        <section id="detail-ITNE352" class="hidden">
+            <h1>Review Details</h1>
+            <article class="review-detail">
+                <header>
+                    <h2></h2>
+                    <div class="meta">
+                        <span class="instructor"></span>
+                        <span class="rating"></span>
+                        <span class="semester"></span>
+                    </div>
+                </header>
+                <div class="review-content">
+                    <h3>Course Review</h3>
+                    <p></p>
+                    <h3>Course Highlights</h3>
+                    <ul></ul>
+                    <h3>Difficulty Level</h3>
+                    <div class="difficulty-meter"></div>
+                </div>
+                <footer>
+                    <small></small>
+                    <div class="actions">
+                        <a href="#create" role="button" class="secondary">Edit</a>
+                        <a href="#listing" role="button" class="secondary">Back to List</a>
+                    </div>
+                </footer>
+            </article>
+        </section>
+        
+        <section id="detail-ITCS333" class="hidden">
+            <h1>Review Details</h1>
+            <article class="review-detail">
+                <header>
+                    <h2></h2>
+                    <div class="meta">
+                        <span class="instructor"></span>
+                        <span class="rating"></span>
+                        <span class="semester"></span>
+                    </div>
+                </header>
+                <div class="review-content">
+                    <h3>Course Review</h3>
+                    <p></p>
+                    <h3>Course Highlights</h3>
+                    <ul></ul>
+                    <h3>Difficulty Level</h3>
+                    <div class="difficulty-meter"></div>
+                </div>
+                <footer>
+                    <small></small>
+                    <div class="actions">
+                        <a href="#create" role="button" class="secondary">Edit</a>
+                        <a href="#listing" role="button" class="secondary">Back to List</a>
+                    </div>
+                </footer>
+            </article>
+        </section>
+        
+        <section id="detail-TRW" class="hidden">
+            <h1>Review Details</h1>
+            <article class="review-detail">
+                <header>
+                    <h2></h2>
+                    <div class="meta">
+                        <span class="instructor"></span>
+                        <span class="rating"></span>
+                        <span class="semester"></span>
+                    </div>
+                </header>
+                <div class="review-content">
+                    <h3>Course Review</h3>
+                    <p></p>
+                    <h3>Course Highlights</h3>
+                    <ul></ul>
+                    <h3>Difficulty Level</h3>
+                    <div class="difficulty-meter"></div>
+                </div>
+                <footer>
+                    <small></small>
+                    <div class="actions">
+                        <a href="#create" role="button" class="secondary">Edit</a>
+                        <a href="#listing" role="button" class="secondary">Back to List</a>
+                    </div>
+                </footer>
+            </article>
+        </section>
+    </main>
+
+    <footer class="container">
+        <small>© 2023 University Course Reviews • All rights reserved</small>
+    </footer>
+
+    <script>
+        class CourseReviews {
+            constructor() {
+                this.reviews = [];
+                this.filteredReviews = [];
+                this.currentPage = 1;
+                this.reviewsPerPage = 6;
+                this.init();
+            }
+
+           
+            async init() {
+                this.setupEventListeners();
+                await this.fetchReviews();
+                this.renderReviews();
+                this.showSection('listing');
+            }
+
+           
+            get apiUrl() {
+                return 'https://65f199d0034bdbecc763230a.mockapi.io/api/v1/course-reviews';
+            }
+
+            
+            async fetchReviews() {
+                try {
+                    this.showLoading(true);
+                    const response = await fetch(this.apiUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    this.reviews = await response.json();
+                    this.filteredReviews = [...this.reviews];
+                    this.showLoading(false);
+                } catch (error) {
+                    this.showLoading(false);
+                    this.showError(`Failed to load reviews: ${error.message}`);
+                    console.error('Fetch error:', error);
+                    this.useSampleData();
+                }
+            }
+
+            
+            useSampleData() {
+                this.reviews = [
+                    {
+                        id: '1',
+                        courseCode: 'ITNE352',
+                        courseName: 'Network Programming',
+                        instructor: 'Dr. Mohammed Abdulaziz',
+                        rating: 4,
+                        semester: 'Fall 2023',
+                        review: 'Excellent course covering socket programming and network protocols. Challenging assignments but very rewarding.',
+                        difficulty: 3,
+                        postedBy: 'CSStudent',
+                        date: '2023-10-15',
+                        highlights: [
+                            'Hands-on socket programming exercises',
+                            'Detailed coverage of network protocols',
+                            'Practical client-server project',
+                            'Clear lecture materials'
+                        ]
+                    },
+                    {
+                        id: '2',
+                        courseCode: 'ITCS333',
+                        courseName: 'Internet Software Development',
+                        instructor: 'Mr. Abdulla Ebrahim',
+                        rating: 5,
+                        semester: 'Summer 2023',
+                        review: 'Fantastic course on web development technologies. Learned HTML, CSS, JavaScript and backend integration.',
+                        difficulty: 2,
+                        postedBy: 'WebDev2023',
+                        date: '2023-09-22',
+                        highlights: [
+                            'Complete web application development',
+                            'Modern JavaScript frameworks',
+                            'REST API development',
+                            'Helpful code reviews'
+                        ]
+                    },
+                    {
+                        id: '3',
+                        courseCode: 'ENGL219',
+                        courseName: 'Technical Report Writing',
+                        instructor: 'Dr. Mohammed Ebrahim',
+                        rating: 3,
+                        semester: 'Spring 2023',
+                        review: 'Important skills for academic and professional writing. Course materials were comprehensive.',
+                        difficulty: 3,
+                        postedBy: 'EngineeringStudent',
+                        date: '2023-08-10',
+                        highlights: [
+                            'Professional report formatting',
+                            'Technical documentation standards',
+                            'Effective data presentation',
+                            'Academic citation methods'
+                        ]
+                    }
+                ];
+                this.filteredReviews = [...this.reviews];
+                this.showError('Using sample data. API connection failed.');
+            }
+
+            
+            setupEventListeners() {
+                
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = e.target.getAttribute('href').substring(1);
+                        this.showSection(section);
+                        this.updateActiveNav(link);
+                    });
+                });
+
+                
+                document.getElementById('search').addEventListener('input', (e) => {
+                    this.handleSearch(e.target.value);
+                });
+
+                document.getElementById('filter').addEventListener('change', (e) => {
+                    this.handleFilter(e.target.value);
+                });
+
+                
+                document.getElementById('sort').addEventListener('change', (e) => {
+                    this.handleSort(e.target.value);
+                });
+
+                
+                document.querySelector('.pagination').addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A') {
+                        e.preventDefault();
+                        this.handlePagination(e);
+                    }
+                });
+
+                
+                document.getElementById('review-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmit();
+                });
+
+                
+                document.getElementById('course-name').addEventListener('change', (e) => {
+                    this.updateInstructorField(e.target.value);
+                });
+            }
+
+            
+            showSection(sectionId) {
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                const section = document.getElementById(sectionId);
+                if (section) section.classList.remove('hidden');
+                
+                if (sectionId.startsWith('detail-')) {
+                    const courseId = sectionId.replace('detail-', '');
+                    this.showReviewDetail(courseId);
+                }
+            }
+
+            updateActiveNav(activeLink) {
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                activeLink.classList.add('active');
+            }
+
+            
+            renderReviews() {
+                const startIndex = (this.currentPage - 1) * this.reviewsPerPage;
+                const endIndex = startIndex + this.reviewsPerPage;
+                const paginatedReviews = this.filteredReviews.slice(startIndex, endIndex);
+                
+                const reviewsContainer = document.querySelector('.reviews-grid');
+                reviewsContainer.innerHTML = '';
+                
+                if (paginatedReviews.length === 0) {
+                    reviewsContainer.innerHTML = `
+                        <article class="no-results">
+                            <p>No reviews found matching your criteria.</p>
+                        </article>
+                    `;
+                    return;
+                }
+                
+                paginatedReviews.forEach(review => {
+                    const reviewElement = document.createElement('article');
+                    reviewElement.className = 'review-card';
+                    reviewElement.innerHTML = `
+                        <header>
+                            <h2>${review.courseCode} ${review.courseName}</h2>
+                            <div class="instructor">${review.instructor}</div>
+                            <div class="rating">${this.renderStars(review.rating)}</div>
+                        </header>
+                        <p>${review.review.substring(0, 100)}...</p>
+                        <footer>
+                            <small>Posted by: ${review.postedBy} • ${review.date}</small>
+                            <a href="#detail-${review.courseCode}" role="button" class="secondary" data-id="${review.id}">Read More</a>
+                        </footer>
+                    `;
+                    reviewsContainer.appendChild(reviewElement);
+                });
+                
+                this.renderPagination();
+            }
+
+            renderStars(rating) {
+                const fullStars = '★'.repeat(Math.floor(rating));
+                const emptyStars = '☆'.repeat(5 - Math.ceil(rating));
+                return fullStars + emptyStars;
+            }
+
+            
+            renderPagination() {
+                const totalPages = Math.ceil(this.filteredReviews.length / this.reviewsPerPage);
+                const pagination = document.querySelector('.pagination ul');
+                pagination.innerHTML = '';
+                
+                
+                pagination.innerHTML += `
+                    <li ${this.currentPage === 1 ? 'class="disabled"' : ''}>
+                        <a href="#" aria-label="Previous" data-page="prev">←</a>
+                    </li>
+                `;
+                
+                
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                if (startPage > 1) {
+                    pagination.innerHTML += `
+                        <li><a href="#" data-page="1">1</a></li>
+                        ${startPage > 2 ? '<li class="disabled"><span>...</span></li>' : ''}
+                    `;
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    pagination.innerHTML += `
+                        <li ${i === this.currentPage ? 'class="active"' : ''}>
+                            <a href="#" data-page="${i}">${i}</a>
+                        </li>
+                    `;
+                }
+                
+                if (endPage < totalPages) {
+                    pagination.innerHTML += `
+                        ${endPage < totalPages - 1 ? '<li class="disabled"><span>...</span></li>' : ''}
+                        <li><a href="#" data-page="${totalPages}">${totalPages}</a></li>
+                    `;
+                }
+                
+                
+                pagination.innerHTML += `
+                    <li ${this.currentPage === totalPages ? 'class="disabled"' : ''}>
+                        <a href="#" aria-label="Next" data-page="next">→</a>
+                    </li>
+                `;
+            }
+
+            handlePagination(e) {
+                const action = e.target.getAttribute('data-page');
+                const totalPages = Math.ceil(this.filteredReviews.length / this.reviewsPerPage);
+                
+                if (action === 'prev' && this.currentPage > 1) {
+                    this.currentPage--;
+                } else if (action === 'next' && this.currentPage < totalPages) {
+                    this.currentPage++;
+                } else if (!isNaN(action)) {
+                    this.currentPage = parseInt(action);
+                }
+                
+                this.renderReviews();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            
+            handleSearch(query) {
+                this.currentPage = 1;
+                this.filteredReviews = this.reviews.filter(review => {
+                    const searchText = `${review.courseCode} ${review.courseName} ${review.instructor} ${review.review}`.toLowerCase();
+                    return searchText.includes(query.toLowerCase());
+                });
+                this.renderReviews();
+            }
+
+            handleFilter(filterValue) {
+                this.currentPage = 1;
+                if (!filterValue) {
+                    this.filteredReviews = [...this.reviews];
+                } else {
+                    this.filteredReviews = this.reviews.filter(review => review.courseCode === filterValue);
+                }
+                this.renderReviews();
+            }
+
+            
+            handleSort(sortValue) {
+                this.currentPage = 1;
+                switch (sortValue) {
+                    case 'newest':
+                        this.filteredReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+                        break;
+                    case 'oldest':
+                        this.filteredReviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+                        break;
+                    case 'rating-high':
+                        this.filteredReviews.sort((a, b) => b.rating - a.rating);
+                        break;
+                    case 'rating-low':
+                        this.filteredReviews.sort((a, b) => a.rating - b.rating);
+                        break;
+                    default:
+                        break;
+                }
+                this.renderReviews();
+            }
+
+            
+            showReviewDetail(courseCode) {
+                const review = this.reviews.find(r => r.courseCode === courseCode);
+                if (!review) return;
+                
+                const detailSection = document.getElementById(`detail-${courseCode}`);
+                if (!detailSection) return;
+                
+                detailSection.querySelector('h2').textContent = `${review.courseCode} ${review.courseName}`;
+                detailSection.querySelector('.instructor').textContent = review.instructor;
+                detailSection.querySelector('.rating').textContent = `${this.renderStars(review.rating)} (${review.rating}/5)`;
+                detailSection.querySelector('.semester').textContent = review.semester;
+                detailSection.querySelector('.review-content p').textContent = review.review;
+                
+                const highlightsList = detailSection.querySelector('.review-content ul');
+                highlightsList.innerHTML = review.highlights.map(h => `<li>${h}</li>`).join('');
+                
+                detailSection.querySelector('.difficulty-meter').innerHTML = `
+                    <span class="filled">${'★'.repeat(review.difficulty)}</span>
+                    <span>${'☆'.repeat(5 - review.difficulty)}</span>
+                    (${this.getDifficultyText(review.difficulty)})
+                `;
+                detailSection.querySelector('small').textContent = `Posted by: ${review.postedBy} • ${review.date}`;
+            }
+
+            getDifficultyText(level) {
+                const levels = ['Very Easy', 'Easy', 'Moderate', 'Challenging', 'Very Difficult'];
+                return levels[level - 1] || 'Unknown';
+            }
+
+            
+            updateInstructorField(courseCode) {
+                const instructors = {
+                    'ITNE352': 'Dr. Mohammed Abdulaziz',
+                    'ITCS333': 'Mr. Abdulla Ebrahim',
+                    'ENGL219': 'Dr. Mohammed Ebrahim'
+                };
+                document.getElementById('instructor').value = instructors[courseCode] || '';
+            }
+
+            validateForm() {
+                const form = document.getElementById('review-form');
+                const inputs = form.querySelectorAll('[required]');
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        this.showInputError(input, 'This field is required');
+                        isValid = false;
+                    } else if (input.id === 'review-text' && input.value.length < 30) {
+                        this.showInputError(input, 'Review must be at least 30 characters');
+                        isValid = false;
+                    } else {
+                        this.clearInputError(input);
+                    }
+                });
+                
+                return isValid;
+            }
+
+            showInputError(input, message) {
+                let errorElement = input.nextElementSibling;
+                if (!errorElement || !errorElement.classList.contains('error-message')) {
+                    errorElement = document.createElement('small');
+                    errorElement.className = 'error-message';
+                    input.parentNode.insertBefore(errorElement, input.nextSibling);
+                }
+                errorElement.textContent = message;
+                input.setAttribute('aria-invalid', 'true');
+            }
+
+            clearInputError(input) {
+                const errorElement = input.nextElementSibling;
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.remove();
+                }
+                input.removeAttribute('aria-invalid');
+            }
+
+            async handleFormSubmit() {
+                if (!this.validateForm()) return;
+                
+                try {
+                    this.showFormLoading(true);
+                    
+                    const newReview = this.getFormData();
+                    newReview.id = (this.reviews.length + 1).toString();
+                    newReview.highlights = []; 
+                    
+                 
+                    
+                    this.reviews.unshift(newReview);
+                    this.filteredReviews.unshift(newReview);
+                    
+                    this.showSuccess('Review submitted successfully!');
+                    this.resetForm();
+                    this.showSection('listing');
+                    this.renderReviews();
+                } catch (error) {
+                    this.showError('Failed to submit review. Please try again.');
+                    console.error('Submission error:', error);
+                } finally {
+                    this.showFormLoading(false);
+                }
+            }
+
+            getFormData() {
+                return {
+                    courseCode: document.getElementById('course-name').value,
+                    courseName: document.getElementById('course-name').selectedOptions[0].text,
+                    instructor: document.getElementById('instructor').value,
+                    rating: parseInt(document.getElementById('rating').value),
+                    semester: document.getElementById('semester').value,
+                    review: document.getElementById('review-text').value,
+                    difficulty: 3, 
+                    postedBy: 'Current User',
+                    date: new Date().toISOString().split('T')[0]
+                };
+            }
+
+            resetForm() {
+                document.getElementById('review-form').reset();
+                document.querySelectorAll('.error-message').forEach(el => el.remove());
+            }
+
+            showLoading(show) {
+                const loader = document.getElementById('loading-indicator');
+                if (!loader) return;
+                loader.style.display = show ? 'block' : 'none';
+                document.querySelector('.reviews-grid').style.opacity = show ? '0.5' : '1';
+            }
+
+            showFormLoading(show) {
+                const submitBtn = document.querySelector('#review-form button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = show;
+                    submitBtn.innerHTML = show ? 
+                        '<span class="spinner"></span> Submitting...' : 
+                        'Submit Review';
+                }
+            }
+
+            showError(message) {
+                const errorElement = document.getElementById('error-message');
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                    setTimeout(() => errorElement.style.display = 'none', 5000);
+                }
+            }
+
+            showSuccess(message) {
+                const successElement = document.getElementById('success-message');
+                if (successElement) {
+                    successElement.textContent = message;
+                    successElement.style.display = 'block';
+                    setTimeout(() => successElement.style.display = 'none', 5000);
+                }
+            }
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', () => {
+            new CourseReviews();
+        });
+    </script>
+</body>
+</html>
