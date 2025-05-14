@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Study Group</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <script type="module" src="./js/edit.js"></script>
+</head>
+<body>
+  <main class="container">
+    <h1>Edit Study Group</h1>
+    <form id="edit-form">
+      <input type="hidden" id="group-id" />
+
+      <label>Title
+        <input type="text" id="title" required />
+      </label>
+
+      <label>Subject
+        <input type="text" id="subject" required />
+      </label>
+
+      <label>Location
+        <input type="text" id="location" required />
+      </label>
+
+      <label>Date
+        <input type="date" id="date" required />
+      </label>
+
+      <label>Time
+        <input type="time" id="time" required />
+      </label>
+
+      <label>Max Members
+        <input type="number" id="members" min="1" required />
+      </label>
+
+      <label>Description
+        <textarea id="description" rows="4" required></textarea>
+      </label>
+
+      <label>Course Code
+        <input type="text" id="course" required />
+      </label>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </main>
+</body>
+</html>

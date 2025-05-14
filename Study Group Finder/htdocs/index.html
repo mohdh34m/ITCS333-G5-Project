@@ -12,9 +12,20 @@
 </head>
 
 <body>
-    <nav class="container navbar">
-        <h1><strong>Study Group Finder</strong></h1>
-    </nav>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>Campus Hub</strong></li>
+            </ul>
+            <ul id="nav-buttons">
+                <li><a href="#" class="homeBtn">Home</a></li>
+                <li><a href="create-form.html" role="button" class="contrast create-btn">Create New Study Group</a></li>
+            </ul>
+        </nav>
+        <h1>Study Group Finder</h1>
+        <p>Join or create groups to collaborate, study, and succeed together.</p>
+    </header>
+
     <main class="container">
         <section class="grid">
             <input type="search" id="search" name="search" placeholder="Search" />
@@ -42,7 +53,6 @@
                 <option value="date-new">Date (Newest → Oldest)</option>
                 <option value="date-coming">Upcoming Study Goups</option>
             </select>
-            <a href="create-form.html" role="button" class="contrast create-btn">Create New Study Group</a>
         </section>
         <section class="grid study-cards">
             <div class="loader"></div>

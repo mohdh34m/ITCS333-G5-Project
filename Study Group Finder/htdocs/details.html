@@ -42,6 +42,23 @@
         </article>
       </div>
     </section>
+    <section id="joinModal" class="modal hidden">
+      <article>
+        <h3>Join Study Group</h3>
+        <form id="joinForm">
+          <label for="name">Name</label>
+          <input type="text" id="joinName" required>
+
+          <label for="studentId">Student ID</label>
+          <input type="text" id="studentId" required>
+
+          <footer style="margin-top: 1rem;">
+            <button type="submit" class="primary">Join</button>
+            <button type="button" id="cancelJoin" class="secondary cancelBtn">Cancel</button>
+          </footer>
+        </form>
+      </article>
+    </section>
   </main>
 
   <script type="module" src="./js/details.js"></script>
