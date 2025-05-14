@@ -1,3 +1,10 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --border-color: #ddd;
+    --error-color: #d32f2f;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -12,15 +19,15 @@
 }
 
 .event-card {
-    border: 1px solid white;
+    border: 1px solid var(--border-color);
     padding: 15px;
     border-radius: 10px;
-    transition: transform 0.2s, box-shadow 0.2s; 
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .event-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
@@ -38,12 +45,12 @@
     margin: 15px 0;
 }
 
-.controls a[role="button"] {
-    transition: background-color 0.2s; 
+.controls button {
+    transition: background-color 0.2s;
 }
 
-.controls a[role="button"]:hover:not(:disabled) {
-    background-color: #e0e0e0; 
+.controls button:hover:not(:disabled) {
+    background-color: #e0e0e0;
 }
 
 .form-grid {
@@ -54,7 +61,7 @@
 }
 
 .error-messages {
-    color: #d32f2f; 
+    color: var(--error-color);
     font-size: 0.9em;
     margin-bottom: 10px;
 }
@@ -76,7 +83,7 @@
 }
 
 .comments-list p {
-    background-color: #f9f9f9; 
+    background-color: #f9f9f9;
     padding: 10px;
     border-radius: 5px;
     margin: 5px 0;
@@ -85,7 +92,74 @@
 .events-grid p:not(.event-card) {
     text-align: center;
     font-style: italic;
-    color: #a7a7a7; 
+    color: #a7a7a7;
+}
+
+/* Pico CSS Overrides */
+.search-filter-bar input,
+.search-filter-bar select,
+.controls select {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.controls ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+.form-grid label,
+.comment-form label {
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea,
+.comment-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.form-grid textarea,
+.comment-form textarea {
+    min-height: 100px;
+}
+
+#status-message {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.loading {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.error {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+h1 {
+    color: var(--primary-color);
+}
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    color: #666;
 }
 
 @media (max-width: 768px) {
@@ -95,5 +169,8 @@
     .controls {
         flex-direction: column;
         gap: 10px;
+    }
+    .controls ul {
+        flex-direction: column;
     }
 }

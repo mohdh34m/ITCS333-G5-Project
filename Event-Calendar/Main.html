@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Calendar</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="container" id="events-listing">
         <header>
             <h1>Events Calendar</h1>
         </header>
-
         <section class="search-filter-bar">
-            <input type="search" placeholder="Search events..." aria-label="Search events">
-            <select aria-label="Filter by category">
+            <input type="search" id="search-input" placeholder="Search events..." aria-label="Search events">
+            <select id="category-filter" aria-label="Filter by category">
                 <option value="">All Categories</option>
                 <option value="academic">Academic</option>
                 <option value="social">Social</option>
                 <option value="sports">Sports</option>
             </select>
-            <select aria-label="Filter by date">
+            <select id="date-filter" aria-label="Filter by date">
                 <option value="">All Dates</option>
                 <option value="today">Today</option>
                 <option value="week">This Week</option>
@@ -30,39 +29,34 @@
         </section>
 
         <section class="controls">
-            <select aria-label="Sort events">
+            <select id="sort-events" aria-label="Sort events">
                 <option value="">Sort by...</option>
                 <option value="date">Date</option>
                 <option value="title">Title</option>
                 <option value="location">Location</option>
             </select>
-            <a href="#create-event" class="button" role="button">Add New Event</a>
+            <button class="contrast" id="add-event-btn">Add New Event</button>
         </section>
 
-        <section class="events-grid">
-            <article class="event-card">
-                <h2>Sample Event 1</h2>
-                <p>Date: April 12, 2025</p>
-                <p>Location: S18</p>
-                <p>Category: Academic</p>
-            </article>
-        </section>
+        <div id="status-message"></div>
+
+        <section class="events-grid" id="events-grid"></section>
 
         <nav class="controls">
             <ul>
-                <li><a href="#" role="button" aria-label="Previous page">Previous</a></li>
-                <li><a href="#" role="button" aria-label="Next page">Next</a></li>
+                <li><button class="contrast" id="prev-page" aria-label="Previous page">Previous</button></li>
+                <li><button class="contrast" id="next-page" aria-label="Next page">Next</button></li>
             </ul>
         </nav>
     </main>
 
-    <main class="container" id="create-event" style="display:none;">
+    <main class="container hidden" id="create-event">
         <header>
-            <h1>Create New Event</h1>
+            <h1 id="form-title">Create New Event</h1>
         </header>
 
-        <form class="form-grid">
-            <div class="error-messages"></div>
+        <form class="form-grid" id="event-form">
+            <div class="error-messages" id="form-errors"></div>
             <div>
                 <label for="title">Event Title <span aria-label="required">*</span></label>
                 <input type="text" id="title" required placeholder="Enter event title">
@@ -76,8 +70,8 @@
                 <input type="text" id="location" placeholder="Enter location">
             </div>
             <div>
-                <label for="category">Category</label>
-                <select id="category">
+                <label for="category">Category <span aria-label="required">*</span></label>
+                <select id="category" required>
                     <option value="academic">Academic</option>
                     <option value="social">Social</option>
                     <option value="sports">Sports</option>
@@ -88,42 +82,40 @@
                 <textarea id="description" placeholder="Event details..."></textarea>
             </div>
             <div>
-                <button type="submit">Create Event</button>
-                <a href="#events-listing" role="button" class="secondary">Cancel</a>
+                <button type="submit" id="submit-btn">Create Event</button>
+                <button type="button" class="secondary" id="cancel-btn">Cancel</button>
             </div>
         </form>
     </main>
 
-    <main class="container" id="event-detail" style="display:none;">
+    <main class="container hidden" id="event-detail">
         <section class="detail-container">
             <header>
-                <h1>Sample Event 1</h1>
+                <h1 id="detail-title"></h1>
             </header>
             <article>
-                <p><strong>Date:</strong> April 12, 2025</p>
-                <p><strong>Location:</strong> S18</p>
-                <p><strong>Category:</strong> Academic</p>
-                <p><strong>Description:</strong> This is a sample event description...</p>
+                <p><strong>Date:</strong> <span id="detail-date"></span></p>
+                <p><strong>Location:</strong> <span id="detail-location"></span></p>
+                <p><strong>Category:</strong> <span id="detail-category"></span></p>
+                <p><strong>Description:</strong> <span id="detail-description"></span></p>
             </article>
 
             <div class="controls">
-                <button>Edit Event</button>
-                <button class="secondary">Delete Event</button>
-                <a href="#events-listing" role="button">Back to Events</a>
+                <button class="contrast" id="edit-btn">Edit Event</button>
+                <button class="secondary" id="delete-btn">Delete Event</button>
+                <button class="contrast" id="back-btn">Back to Events</button>
             </div>
 
             <section class="comments-section">
                 <h2>Comments</h2>
-                <form class="comment-form">
+                <form class="comment-form" id="comment-form">
                     <div>
                         <label for="comment">Add a Comment</label>
                         <textarea id="comment" placeholder="Write your comment..." required></textarea>
                     </div>
                     <button type="submit">Submit Comment</button>
                 </form>
-                <article class="comments-list">
-                    <p>No comments yet.</p>
-                </article>
+                <article class="comments-list" id="comments-list"></article>
             </section>
         </section>
     </main>
@@ -132,368 +124,6 @@
         <p>© 2025 Event Calendar</p>
     </footer>
 
-    <script>
-        
-        let events = [];
-        let currentPage = 1;
-        const eventsPerPage = 6;
-        let editingEventId = null; 
-
-        
-        const eventsGrid = document.querySelector('.events-grid');
-        const searchInput = document.querySelector('input[type="search"]');
-        const categoryFilter = document.querySelector('select[aria-label="Filter by category"]');
-        const dateFilter = document.querySelector('select[aria-label="Filter by date"]');
-        const sortSelect = document.querySelector('select[aria-label="Sort events"]');
-        const prevButton = document.querySelector('nav.controls a[role="button"]:first-child');
-        const nextButton = document.querySelector('nav.controls a[role="button"]:last-child');
-        const createForm = document.querySelector('.form-grid');
-        const eventDetailSection = document.querySelector('#event-detail');
-        const detailContainer = eventDetailSection.querySelector('.detail-container');
-        const commentForm = document.querySelector('.comment-form');
-
-        
-        function sanitizeInput(input) {
-            const div = document.createElement('div');
-            div.textContent = input;
-            return div.innerHTML;
-        }
-
-       
-        function showLoading(container) {
-            container.innerHTML = '<p>Loading...</p>';
-        }
-
-        
-        function showError(container, message) {
-            container.innerHTML = `<p style="color: red;">Error: ${message}</p>`;
-        }
-
-       
-        async function fetchEvents() {
-            try {
-                showLoading(eventsGrid);
-                // Replace with your actual API endpoint
-                const response = await fetch('https://my-json-server.typicode.com/username/repo/events');
-                if (!response.ok) throw new Error('Failed to fetch events');
-                events = await response.json();
-               
-                events = events.map(event => ({ ...event, comments: event.comments || [] }));
-                renderEvents();
-            } catch (error) {
-                showError(eventsGrid, error.message);
-            }
-        }
-
-        
-        function renderEvents() {
-            
-            let filteredEvents = events.filter(event => {
-                const searchTerm = sanitizeInput(searchInput.value).toLowerCase();
-                const category = categoryFilter.value;
-                const dateRange = dateFilter.value;
-                const today = new Date().toISOString().split('T')[0];
-
-                
-                const matchesSearch = event.title.toLowerCase().includes(searchTerm) ||
-                                     event.description.toLowerCase().includes(searchTerm);
-
-                
-                const matchesCategory = !category || event.category === category;
-
-               
-                let matchesDate = true;
-                if (dateRange === 'today') {
-                    matchesDate = event.date === today;
-                } else if (dateRange === 'week') {
-                    const eventDate = new Date(event.date);
-                    const weekFromNow = new Date();
-                    weekFromNow.setDate(weekFromNow.getDate() + 7);
-                    matchesDate = eventDate >= new Date(today) && eventDate <= weekFromNow;
-                } else if (dateRange === 'month') {
-                    const eventDate = new Date(event.date);
-                    const monthFromNow = new Date();
-                    monthFromNow.setMonth(monthFromNow.getMonth() + 1);
-                    matchesDate = eventDate >= new Date(today) && eventDate <= monthFromNow;
-                }
-
-                return matchesSearch && matchesCategory && matchesDate;
-            });
-
-            
-            const sortBy = sortSelect.value;
-            filteredEvents.sort((a, b) => {
-                if (sortBy === 'date') return new Date(a.date) - new Date(b.date);
-                if (sortBy === 'title') return a.title.localeCompare(b.title);
-                if (sortBy === 'location') return a.location.localeCompare(b.location);
-                return 0;
-            });
-
-            
-            const start = (currentPage - 1) * eventsPerPage;
-            const end = start + eventsPerPage;
-            const paginatedEvents = filteredEvents.slice(start, end);
-
-           
-            eventsGrid.innerHTML = paginatedEvents.length
-                ? paginatedEvents.map(event => `
-                    <article class="event-card" data-id="${event.id}">
-                      <h2>${sanitizeInput(event.title)}</h2>
-                      <p>Date: <time datetime="${event.date}">${new Date(event.date).toLocaleDateString()}</time></p>
-                      <p>Location: ${sanitizeInput(event.location)}</p>
-                      <p>Category: ${sanitizeInput(event.category.charAt(0).toUpperCase() + event.category.slice(1))}</p>
-                    </article>
-                  `).join('')
-                : '<p>No events found.</p>';
-
-            
-            prevButton.disabled = currentPage === 1;
-            nextButton.disabled = end >= filteredEvents.length;
-        }
-
-       
-        function showEventDetails(eventId) {
-            const event = events.find(e => e.id === Number(eventId));
-            if (!event) {
-                showError(detailContainer, 'Event not found');
-                return;
-            }
-
-            detailContainer.innerHTML = `
-                <header>
-                    <h1>${sanitizeInput(event.title)}</h1>
-                </header>
-                <article>
-                    <p><strong>Date:</strong> <time datetime="${event.date}">${new Date(event.date).toLocaleDateString()}</time></p>
-                    <p><strong>Location:</strong> ${sanitizeInput(event.location)}</p>
-                    <p><strong>Category:</strong> ${sanitizeInput(event.category.charAt(0).toUpperCase() + event.category.slice(1))}</p>
-                    <p><strong>Description:</strong> ${sanitizeInput(event.description || 'No description available.')}</p>
-                </article>
-                <div class="controls">
-                    <button data-action="edit" data-id="${event.id}">Edit Event</button>
-                    <button class="secondary" data-action="delete" data-id="${event.id}">Delete Event</button>
-                    <a href="#events-listing" role="button">Back to Events</a>
-                </div>
-                <section class="comments-section">
-                    <h2>Comments</h2>
-                    <form class="comment-form">
-                        <div>
-                            <label for="comment">Add a Comment</label>
-                            <textarea id="comment" placeholder="Write your comment..." required></textarea>
-                        </div>
-                        <button type="submit">Submit Comment</button>
-                    </form>
-                    <article class="comments-list">
-                        ${event.comments.length
-                            ? event.comments.map(comment => `<p>${sanitizeInput(comment)}</p>`).join('')
-                            : '<p>No comments yet.</p>'}
-                    </article>
-                </section>
-            `;
-
-            
-            document.querySelectorAll('main.container').forEach(section => section.style.display = 'none');
-            eventDetailSection.style.display = 'block';
-        }
-
-        
-        function validateForm(formData) {
-            const errors = [];
-            if (!formData.title.trim()) errors.push('Event title is required.');
-            if (!formData.date) errors.push('Date is required.');
-            if (new Date(formData.date) < new Date().setHours(0, 0, 0, 0)) errors.push('Date cannot be in the past.');
-            if (formData.location && formData.location.length > 100) errors.push('Location must be under 100 characters.');
-            if (formData.description && formData.description.length > 500) errors.push('Description must be under 500 characters.');
-            return errors;
-        }
-
-        
-        function setupRealTimeValidation() {
-            const fields = ['title', 'date', 'location', 'description'];
-            fields.forEach(field => {
-                const input = createForm.querySelector(`#${field}`);
-                input.addEventListener('blur', () => {
-                    const formData = {
-                        title: createForm.querySelector('#title').value,
-                        date: createForm.querySelector('#date').value,
-                        location: createForm.querySelector('#location').value,
-                        category: createForm.querySelector('#category').value,
-                        description: createForm.querySelector('#description').value
-                    };
-                    const errors = validateForm(formData);
-                    const errorContainer = createForm.querySelector('.error-messages');
-                    errorContainer.innerHTML = errors.length
-                        ? errors.map(err => `<p>${err}</p>`).join('')
-                        : '';
-                });
-            });
-        }
-
-        
-        function populateFormForEdit(eventId) {
-            const event = events.find(e => e.id === Number(eventId));
-            if (!event) return;
-
-            editingEventId = eventId;
-            createForm.querySelector('#title').value = event.title;
-            createForm.querySelector('#date').value = event.date;
-            createForm.querySelector('#location').value = event.location;
-            createForm.querySelector('#category').value = event.category;
-            createForm.querySelector('#description').value = event.description;
-            createForm.querySelector('button[type="submit"]').textContent = 'Update Event';
-            document.querySelector('#create-event header h1').textContent = 'Edit Event';
-
-            
-            document.querySelectorAll('main.container').forEach(section => section.style.display = 'none');
-            document.querySelector('#create-event').style.display = 'block';
-        }
-
-        
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const formData = {
-                title: sanitizeInput(createForm.querySelector('#title').value),
-                date: createForm.querySelector('#date').value,
-                location: sanitizeInput(createForm.querySelector('#location').value),
-                category: createForm.querySelector('#category').value,
-                description: sanitizeInput(createForm.querySelector('#description').value)
-            };
-
-            const errors = validateForm(formData);
-            const errorContainer = createForm.querySelector('.error-messages');
-            errorContainer.innerHTML = errors.length
-                ? errors.map(err => `<p>${err}</p>`).join('')
-                : '';
-
-            if (errors.length) return;
-
-            if (editingEventId) {
-               
-                events = events.map(event =>
-                    event.id === Number(editingEventId)
-                        ? { ...event, ...formData }
-                        : event
-                );
-                alert('Event updated successfully!');
-            } else {
-              
-                const newEvent = {
-                    id: events.length + 1,
-                    ...formData,
-                    comments: []
-                };
-                events.push(newEvent);
-                alert('Event created successfully!');
-            }
-
-           
-            createForm.reset();
-            editingEventId = null;
-            createForm.querySelector('button[type="submit"]').textContent = 'Create Event';
-            document.querySelector('#create-event header h1').textContent = 'Create New Event';
-            errorContainer.innerHTML = '';
-            window.location.hash = 'events-listing';
-            renderEvents();
-        }
-
-        
-        function handleCommentSubmit(e, eventId) {
-            e.preventDefault();
-            const commentText = sanitizeInput(commentForm.querySelector('#comment').value);
-            if (!commentText.trim()) return;
-
-            events = events.map(event =>
-                event.id === Number(eventId)
-                    ? { ...event, comments: [...event.comments, commentText] }
-                    : event
-            );
-            commentForm.reset();
-            showEventDetails(eventId);
-        }
-
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchEvents();
-            setupRealTimeValidation();
-
-            
-            searchInput.addEventListener('input', () => { currentPage = 1; renderEvents(); });
-            categoryFilter.addEventListener('change', () => { currentPage = 1; renderEvents(); });
-            dateFilter.addEventListener('change', () => { currentPage = 1; renderEvents(); });
-            sortSelect.addEventListener('change', () => renderEvents());
-
-           
-            prevButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderEvents();
-                }
-            });
-            nextButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                currentPage++;
-                renderEvents();
-            });
-
-            
-            eventsGrid.addEventListener('click', (e) => {
-                const card = e.target.closest('.event-card');
-                if (card) {
-                    const eventId = card.dataset.id;
-                    showEventDetails(eventId);
-                    window.location.hash = `event-detail/${eventId}`;
-                }
-            });
-
-            
-            createForm.addEventListener('submit', handleFormSubmit);
-
-            
-            eventDetailSection.addEventListener('click', (e) => {
-                const button = e.target.closest('button[data-action]');
-                if (button) {
-                    const eventId = button.dataset.id;
-                    if (button.dataset.action === 'edit') {
-                        populateFormForEdit(eventId);
-                        window.location.hash = 'create-event';
-                    } else if (button.dataset.action === 'delete') {
-                        if (confirm('Are you sure you want to delete this event?')) {
-                            events = events.filter(e => e.id !== Number(eventId));
-                            window.location.hash = 'events-listing';
-                            renderEvents();
-                        }
-                    }
-                }
-            });
-
-            
-            eventDetailSection.addEventListener('submit', (e) => {
-                if (e.target.classList.contains('comment-form')) {
-                    const eventId = window.location.hash.split('/')[1];
-                    handleCommentSubmit(e, eventId);
-                }
-            });
-
-            
-            window.addEventListener('hashchange', () => {
-                const hash = window.location.hash.slice(1);
-                document.querySelectorAll('main.container').forEach(section => section.style.display = 'none');
-                if (hash.startsWith('event-detail/')) {
-                    const eventId = hash.split('/')[1];
-                    showEventDetails(eventId);
-                } else if (hash === 'create-event') {
-                    document.querySelector('#create-event').style.display = 'block';
-                } else {
-                    document.querySelector('#events-listing').style.display = 'block';
-                }
-            });
-
-            
-            if (window.location.hash) {
-                window.dispatchEvent(new Event('hashchange'));
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
