@@ -1,3 +1,153 @@
+<?php
+
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'course_reviews');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+
+class API {
+    private $conn;
+    
+    public function __construct() {
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
+                DB_USER, 
+                DB_PASS
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
+        }
+    }
+    
+    public function handleRequest() {
+        $method = $_SERVER['REQUEST_METHOD'];
+        
+        switch ($method) {
+            case 'GET':
+                $this->getReviews();
+                break;
+            case 'POST':
+                $this->createReview();
+                break;
+            case 'OPTIONS':
+               
+                http_response_code(200);
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode(['error' => 'Method not allowed']);
+                break;
+        }
+    }
+    
+    private function getReviews() {
+        try {
+            $stmt = $this->conn->query("SELECT * FROM reviews ORDER BY date DESC");
+            $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            echo json_encode($reviews ?: []);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to fetch reviews: ' . $e->getMessage()]);
+        }
+    }
+    
+    private function createReview() {
+        // Get JSON input from request body
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        
+        if (!$data) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid JSON input']);
+            return;
+        }
+        
+        // Validate required fields
+        $required = ['courseCode', 'courseName', 'instructor', 'rating', 'semester', 'review'];
+        foreach ($required as $field) {
+            if (empty($data[$field])) {
+                http_response_code(400);
+                echo json_encode(['error' => "Missing required field: $field"]);
+                return;
+            }
+        }
+        
+        try {
+            $stmt = $this->conn->prepare("
+                INSERT INTO reviews 
+                (courseCode, courseName, instructor, rating, semester, review, difficulty, postedBy, date)
+                VALUES 
+                (:courseCode, :courseName, :instructor, :rating, :semester, :review, :difficulty, :postedBy, :date)
+            ");
+            
+            $result = $stmt->execute([
+                ':courseCode' => $data['courseCode'],
+                ':courseName' => $data['courseName'],
+                ':instructor' => $data['instructor'],
+                ':rating' => (int)$data['rating'],
+                ':semester' => $data['semester'],
+                ':review' => $data['review'],
+                ':difficulty' => isset($data['difficulty']) ? (int)$data['difficulty'] : 3,
+                ':postedBy' => $data['postedBy'] ?? 'Anonymous',
+                ':date' => isset($data['date']) ? $data['date'] : date('Y-m-d')
+            ]);
+            
+            if ($result) {
+                $data['id'] = $this->conn->lastInsertId();
+                http_response_code(201);
+                echo json_encode($data);
+            } else {
+                http_response_code(500);
+                echo json_encode(['error' => 'Failed to create review']);
+            }
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+        }
+    }
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    
+    http_response_code(200);
+    exit;
+}
+
+if (isset($_GET['api'])) {
+    $api = new API();
+    $api->handleRequest();
+    exit;
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!DOCTYPE html>
 
@@ -166,6 +316,20 @@
             }
         }
     </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </head>
 <body>
     <header class="container">
@@ -367,6 +531,19 @@
     <footer class="container">
         <small>© 2023 University Course Reviews • All rights reserved</small>
     </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
         class CourseReviews {
@@ -776,32 +953,42 @@
                 input.removeAttribute('aria-invalid');
             }
 
-            async handleFormSubmit() {
-                if (!this.validateForm()) return;
-                
-                try {
-                    this.showFormLoading(true);
-                    
-                    const newReview = this.getFormData();
-                    newReview.id = (this.reviews.length + 1).toString();
-                    newReview.highlights = []; 
-                    
-                 
-                    
-                    this.reviews.unshift(newReview);
-                    this.filteredReviews.unshift(newReview);
-                    
-                    this.showSuccess('Review submitted successfully!');
-                    this.resetForm();
-                    this.showSection('listing');
-                    this.renderReviews();
-                } catch (error) {
-                    this.showError('Failed to submit review. Please try again.');
-                    console.error('Submission error:', error);
-                } finally {
-                    this.showFormLoading(false);
-                }
+             async handleFormSubmit() {
+        if (!this.validateForm()) return;
+        
+        try {
+            this.showFormLoading(true);
+            
+            const newReview = this.getFormData();
+            
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newReview)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+            
+            const createdReview = await response.json();
+            
+            this.reviews.unshift(createdReview);
+            this.filteredReviews.unshift(createdReview);
+            
+            this.showSuccess('Review submitted successfully!');
+            this.resetForm();
+            this.showSection('listing');
+            this.renderReviews();
+        } catch (error) {
+            this.showError('Failed to submit review. Please try again.');
+            console.error('Submission error:', error);
+        } finally {
+            this.showFormLoading(false);
+        }
+    }
 
             getFormData() {
                 return {
