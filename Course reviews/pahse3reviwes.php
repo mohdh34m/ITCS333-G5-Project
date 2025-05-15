@@ -1,7 +1,6 @@
 <?php
-
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
@@ -21,11 +20,44 @@ class API {
                 DB_PASS
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->initializeDatabase();
         } catch (PDOException $e) {
-            die("Database connection failed: " . $e->getMessage());
+            die(json_encode(['error' => "Database connection failed: " . $e->getMessage()]));
         }
     }
-    
+
+  
+    private function initializeDatabase() {
+        $sql = [
+            "CREATE TABLE IF NOT EXISTS courses (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                code VARCHAR(10) UNIQUE,
+                name VARCHAR(100) NOT NULL
+            )",
+            "CREATE TABLE IF NOT EXISTS instructors (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL UNIQUE
+            )",
+            "CREATE TABLE IF NOT EXISTS reviews (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                course_id INT NOT NULL,
+                instructor_id INT NOT NULL,
+                rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+                semester VARCHAR(20) NOT NULL,
+                review TEXT NOT NULL,
+                difficulty TINYINT DEFAULT 3,
+                posted_by VARCHAR(50) DEFAULT 'Anonymous',
+                date DATE DEFAULT CURRENT_DATE,
+                FOREIGN KEY (course_id) REFERENCES courses(id),
+                FOREIGN KEY (instructor_id) REFERENCES instructors(id)
+            )"
+        ];
+
+        foreach ($sql as $query) {
+            $this->conn->exec($query);
+        }
+    }
+
     public function handleRequest() {
         $method = $_SERVER['REQUEST_METHOD'];
         
@@ -36,8 +68,13 @@ class API {
             case 'POST':
                 $this->createReview();
                 break;
+            case 'PUT':
+                $this->updateReview();
+                break;
+            case 'DELETE':
+                $this->deleteReview();
+                break;
             case 'OPTIONS':
-               
                 http_response_code(200);
                 break;
             default:
@@ -46,21 +83,27 @@ class API {
                 break;
         }
     }
+
     
     private function getReviews() {
         try {
-            $stmt = $this->conn->query("SELECT * FROM reviews ORDER BY date DESC");
+            $stmt = $this->conn->query("
+                SELECT r.*, c.code AS course_code, c.name AS course_name, i.name AS instructor_name
+                FROM reviews r
+                JOIN courses c ON r.course_id = c.id
+                JOIN instructors i ON r.instructor_id = i.id
+                ORDER BY r.date DESC
+            ");
             $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
             echo json_encode($reviews ?: []);
         } catch (PDOException $e) {
             http_response_code(500);
             echo json_encode(['error' => 'Failed to fetch reviews: ' . $e->getMessage()]);
         }
     }
+
     
     private function createReview() {
-        // Get JSON input from request body
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
         
@@ -70,7 +113,7 @@ class API {
             return;
         }
         
-        // Validate required fields
+        
         $required = ['courseCode', 'courseName', 'instructor', 'rating', 'semester', 'review'];
         foreach ($required as $field) {
             if (empty($data[$field])) {
@@ -79,48 +122,113 @@ class API {
                 return;
             }
         }
-        
+
         try {
-            $stmt = $this->conn->prepare("
-                INSERT INTO reviews 
-                (courseCode, courseName, instructor, rating, semester, review, difficulty, postedBy, date)
-                VALUES 
-                (:courseCode, :courseName, :instructor, :rating, :semester, :review, :difficulty, :postedBy, :date)
+            
+            $this->conn->beginTransaction();
+
+            
+            $courseStmt = $this->conn->prepare("
+                INSERT INTO courses (code, name) VALUES (?, ?)
+                ON DUPLICATE KEY UPDATE name = VALUES(name)
             ");
+            $courseStmt->execute([$data['courseCode'], $data['courseName']]);
+            $courseId = $this->conn->lastInsertId() ?: $this->conn->query("SELECT id FROM courses WHERE code = '{$data['courseCode']}'")->fetchColumn();
+
             
-            $result = $stmt->execute([
-                ':courseCode' => $data['courseCode'],
-                ':courseName' => $data['courseName'],
-                ':instructor' => $data['instructor'],
-                ':rating' => (int)$data['rating'],
-                ':semester' => $data['semester'],
-                ':review' => $data['review'],
-                ':difficulty' => isset($data['difficulty']) ? (int)$data['difficulty'] : 3,
-                ':postedBy' => $data['postedBy'] ?? 'Anonymous',
-                ':date' => isset($data['date']) ? $data['date'] : date('Y-m-d')
+            $instructorStmt = $this->conn->prepare("
+                INSERT INTO instructors (name) VALUES (?)
+                ON DUPLICATE KEY UPDATE name = VALUES(name)
+            ");
+            $instructorStmt->execute([$data['instructor']]);
+            $instructorId = $this->conn->lastInsertId() ?: $this->conn->query("SELECT id FROM instructors WHERE name = '{$data['instructor']}'")->fetchColumn();
+
+            
+            $reviewStmt = $this->conn->prepare("
+                INSERT INTO reviews (
+                    course_id, instructor_id, rating, semester, review, 
+                    difficulty, posted_by, date
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $reviewStmt->execute([
+                $courseId,
+                $instructorId,
+                (int)$data['rating'],
+                $data['semester'],
+                $data['review'],
+                $data['difficulty'] ?? 3,
+                $data['postedBy'] ?? 'Anonymous',
+                $data['date'] ?? date('Y-m-d')
             ]);
-            
-            if ($result) {
-                $data['id'] = $this->conn->lastInsertId();
-                http_response_code(201);
-                echo json_encode($data);
-            } else {
-                http_response_code(500);
-                echo json_encode(['error' => 'Failed to create review']);
-            }
+
+            $this->conn->commit();
+            http_response_code(201);
+            echo json_encode(['success' => true, 'id' => $this->conn->lastInsertId()]);
         } catch (PDOException $e) {
+            $this->conn->rollBack();
             http_response_code(500);
             echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+        }
+    }
+
+    
+    private function updateReview() {
+        parse_str(file_get_contents('php://input'), $data);
+        $id = $_GET['id'] ?? null;
+        
+        if (!$id || empty($data)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing review ID or data']);
+            return;
+        }
+
+        try {
+            $stmt = $this->conn->prepare("
+                UPDATE reviews SET 
+                    rating = ?, 
+                    review = ?, 
+                    difficulty = ?
+                WHERE id = ?
+            ");
+            $stmt->execute([
+                $data['rating'],
+                $data['review'],
+                $data['difficulty'],
+                $id
+            ]);
+            echo json_encode(['success' => $stmt->rowCount() > 0]);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Update failed: ' . $e->getMessage()]);
+        }
+    }
+
+    
+    private function deleteReview() {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing review ID']);
+            return;
+        }
+
+        try {
+            $stmt = $this->conn->prepare("DELETE FROM reviews WHERE id = ?");
+            $stmt->execute([$id]);
+            echo json_encode(['success' => $stmt->rowCount() > 0]);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Delete failed: ' . $e->getMessage()]);
         }
     }
 }
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    
     http_response_code(200);
     exit;
 }
+
 
 if (isset($_GET['api'])) {
     $api = new API();
@@ -128,7 +236,6 @@ if (isset($_GET['api'])) {
     exit;
 }
 ?>
-
 
 
 
